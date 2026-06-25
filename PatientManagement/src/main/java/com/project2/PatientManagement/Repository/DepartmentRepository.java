@@ -1,4 +1,7 @@
 package com.project2.PatientManagement.Repository;
 
-public interface DepartmentRepository extends org.springframework.data.jpa.repository.JpaRepository<com.project2.PatientManagement.Entity.Department, java.lang.Long> {
+import com.project2.PatientManagement.Entity.Department;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface DepartmentRepository extends JpaRepository<Department, Long> {
 }

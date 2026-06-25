@@ -21,6 +21,7 @@ public class Appointment {
     private LocalDateTime appointmentTime;
     @Column(length = 500)
     private String reason;
+
     @ManyToOne
     @JoinColumn(name="patient",nullable = false) // every appointment should have patients
     private Patient patient;

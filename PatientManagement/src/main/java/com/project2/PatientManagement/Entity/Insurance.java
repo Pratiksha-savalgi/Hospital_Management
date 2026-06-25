@@ -1,10 +1,7 @@
 package com.project2.PatientManagement.Entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
@@ -15,6 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Insurance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +29,7 @@ public class Insurance {
     @Column(nullable = false,updatable = false)
     private LocalDateTime created_at;
     @OneToOne(mappedBy = "insurance")//Inverse side
-    @JoinColumn(name = "patient_id") //nullable is not set to false bcoz patient may not have insurance
+
+     //nullable is not set to false bcoz patient may not have insuranc
     private Patient patient;
 }
