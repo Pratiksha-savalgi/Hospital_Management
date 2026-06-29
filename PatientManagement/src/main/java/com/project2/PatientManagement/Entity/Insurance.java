@@ -25,11 +25,11 @@ public class Insurance {
 
     @Column(nullable = false)
     private LocalDate validDate;
+
     @CreationTimestamp
     @Column(nullable = false,updatable = false)
     private LocalDateTime created_at;
-    @OneToOne(mappedBy = "insurance")//Inverse side
 
-     //nullable is not set to false bcoz patient may not have insuranc
+    @OneToOne(mappedBy = "insurance")//Inverse side //nullable is not set to false bcoz patient may not have insuranc
     private Patient patient;
 }

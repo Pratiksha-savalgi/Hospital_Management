@@ -9,31 +9,43 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@ToString
 @Getter
 @Setter
+@ToString
 public class Patient {
+
  @Id
  @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long id;
- public String name;
- @Column(unique = true,nullable = false)
- public String email;
- public LocalDate birthDate;
+ private Long id;
+
+ @Column(nullable = false)
+ private String name;
+
+ @Column(unique = true, nullable = false)
+ private String email;
+
+ private LocalDate birthDate;
 
  @Enumerated(EnumType.STRING)
- public bloodType bloodGroup;
+ private bloodType bloodGroup;
 
-  @OneToOne (cascade = {CascadeType.MERGE,CascadeType.PERSIST})//Owning side
+ @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+ @JoinColumn(name = "insurance_id")
  private Insurance insurance;
 
-@OneToMany(mappedBy = "patient",cascade = {CascadeType.REMOVE},orphanRemoval = true)//Inverse side
-@ToString.Exclude
-private List<Appointment> appointments;
-
-
-
+ @OneToMany(
+         mappedBy = "patient",
+         cascade = CascadeType.REMOVE,
+         orphanRemoval = true
+ )
+ @ToString.Exclude
+ private List<Appointment> appointments = new ArrayList<>();
 }
+
+
+
+
