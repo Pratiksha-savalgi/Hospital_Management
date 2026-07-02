@@ -41,6 +41,8 @@ public class Doctor {
     @Column(nullable = false)
     private Boolean available;
 
-
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }

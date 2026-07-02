@@ -12,6 +12,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class DoctorService {
@@ -19,15 +21,15 @@ public class DoctorService {
     private final ModelMapper modelMapper;
 
     public DoctorResDto createDoctor(DoctorReqDto doctorReqDto) {
-        Doctor doctor=modelMapper.map(doctorReqDto,Doctor.class);
+        Doctor doctor = modelMapper.map(doctorReqDto, Doctor.class);
         doctor.setAvailable(true);
-        Doctor saveDoctor =doctorRepository.save(doctor);
+        Doctor saveDoctor = doctorRepository.save(doctor);
         return modelMapper.map(saveDoctor, DoctorResDto.class);
     }
 
     public DoctorResDto getDoctorById(Long id) {
         Doctor doctor = doctorRepository.findById(id).orElseThrow();
-        return modelMapper.map(doctor,DoctorResDto.class);
+        return modelMapper.map(doctor, DoctorResDto.class);
     }
 
     public DoctorResDto getDoctorByName(String name) {
@@ -35,22 +37,44 @@ public class DoctorService {
         if (doctor == null) {
             throw new RuntimeException("Doctor not found");
         }
-        return modelMapper.map(doctor,DoctorResDto.class);
+        return modelMapper.map(doctor, DoctorResDto.class);
     }
 
 
     public DoctorResDto updateDoctor(Long id, DoctorReqDto doctorReqDto) {
         Doctor doctor = doctorRepository.findById(id).orElseThrow();
-        modelMapper.map(doctorReqDto,doctor);
+        modelMapper.map(doctorReqDto, doctor);
         doctorRepository.save(doctor);
-        return modelMapper.map(doctor,DoctorResDto.class);
+        return modelMapper.map(doctor, DoctorResDto.class);
     }
 
     public void deleteDoctor(Long id) {
-        if(!doctorRepository.existsById(id)){
-            throw new IllegalArgumentException("Student does not exists by id"+id);
+        if (!doctorRepository.existsById(id)) {
+            throw new IllegalArgumentException("Student does not exists by id" + id);
         }
         doctorRepository.deleteById(id);
     }
 
+    public DoctorResDto updateAvailability(Long id, boolean available) {
+
+        Doctor doctor = doctorRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Doctor not found"));
+
+        doctor.setAvailable(available);
+
+        doctorRepository.save(doctor);
+
+        return modelMapper.map(doctor, DoctorResDto.class);
+    }
+
+    public List<DoctorResDto> getAvailableDoctors() {
+
+        List<Doctor> doctors = doctorRepository.findByAvailableTrue();
+
+        return doctors.stream()
+                .map(doctor -> modelMapper.map(doctor, DoctorResDto.class))
+                .toList();
+    }
 }
+
+

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/doctor")
+@RequestMapping("public/doctors")
 public class DoctorController {
     private final DoctorService doctorService;
 
@@ -39,5 +39,14 @@ public class DoctorController {
     public ResponseEntity<Void> deleteDoctor(@PathVariable Long id){
         doctorService.deleteDoctor(id);
         return ResponseEntity.noContent().build();
+    }
+    @PatchMapping("/{id}/availability")
+    public ResponseEntity<DoctorResDto> updateAvailability(
+            @PathVariable Long id,
+            @RequestParam boolean available) {
+
+        return ResponseEntity.ok(
+                doctorService.updateAvailability(id, available)
+        );
     }
 }

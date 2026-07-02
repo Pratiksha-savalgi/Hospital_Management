@@ -1,6 +1,8 @@
 package com.project2.PatientManagement.Controller;
 
+import com.project2.PatientManagement.Service.DoctorService;
 import com.project2.PatientManagement.Service.PatientService;
+import com.project2.PatientManagement.dto.DoctorResDto;
 import com.project2.PatientManagement.dto.PatientRequestDTO;
 import com.project2.PatientManagement.dto.PatientResponseDTO;
 import jakarta.validation.Valid;
@@ -13,10 +15,11 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/patient")
+@RequestMapping("admin/patient")
 public class PatientController {
 
     private final PatientService patientService;
+    private final DoctorService doctorService;
     @PostMapping("/create")
     public ResponseEntity<PatientResponseDTO> CreateNewPatient(@Valid @RequestBody PatientRequestDTO patientRequestDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(patientService.createNewPatient(patientRequestDTO));
@@ -47,4 +50,10 @@ public class PatientController {
         patientService.deletePatient(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/available-doctors")
+    public ResponseEntity<List<DoctorResDto>> getAvailableDoctors() {
+        return ResponseEntity.ok(doctorService.getAvailableDoctors());
+    }
+
 }

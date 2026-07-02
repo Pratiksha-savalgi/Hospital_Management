@@ -18,6 +18,10 @@ import java.util.List;
 @ToString
 public class Patient {
 
+ @OneToOne
+ @JoinColumn(name = "user_id")
+ private User user;
+
  @Id
  @GeneratedValue(strategy = GenerationType.IDENTITY)
  private Long id;
